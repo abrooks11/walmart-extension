@@ -15,14 +15,15 @@ groceryItemWrappers.forEach((element) => {
   const [itemWrapper, priceWrapper] = element.childNodes;
   const item = [...itemWrapper.childNodes][0].innerText;
   let price = [...priceWrapper.childNodes][0].innerText;
-  price = price.slice(1, price.indexOf(".") + 3);
+  let defaultName = "alicia";
+  price = price.includes(".") ? price.slice(1, price.indexOf(".") + 3) : price; // Keep only 2 decimal places
   groceryList.push({
     item: item,
     price: price,
-    name: null,
+    name: defaultName,
   });
 });
-// console.log(groceryList);
+console.log(groceryList);
 
 // *SEND GROCERY ITEMS TO BACKGROUND SCRIPT
 chrome.runtime.sendMessage({
@@ -30,5 +31,3 @@ chrome.runtime.sendMessage({
   data: groceryList,
 });
 console.log("data sent from content.js to background.js ", groceryList);
-
-

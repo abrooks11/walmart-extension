@@ -1,0 +1,25 @@
+body {
+  padding: 10px;
+}
+
+.item-row,
+.name-wrapper,
+#totals-wrapper {
+  display: inline-flex;
+}
+
+.item-row {
+  padding: 5px 10px;
+}
+
+.item-wrapper {
+  white-space: nowrap; /* Prevents text from wrapping */
+  overflow: hidden; /* Hides any overflowing content */
+  text-overflow: ellipsis; /* Optionally adds '...' for overflow */
+  width: 200px; /* Set a width for the ellipsis effect */
+}
+
+#totals-wrapper {
+  gap: 50px;
+  justify-content: center;
+}
