@@ -1,0 +1,27 @@
+{
+  "manifest_version": 3,
+  "name": "Wali",
+  "description": "An extension to calculate wal-mart individual and shared grocery expenses",
+  "version": "1.0",
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": "images/walmart-logo.png"
+  },
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://www.walmart.com/orders/*"],
+      "css": ["style.css"]
+    }
+  ],
+  "permissions": [
+    "activeTab",
+    "nativeMessaging",
+    "storage",
+    "scripting",
+    "tabs"
+  ]
+}
