@@ -1,22 +1,33 @@
+* {
+  box-sizing: border-box;
+}
+
 body {
-  padding: 10px;
+  padding: 20px;
 }
 
 .item-row,
 .name-wrapper,
 #totals-wrapper {
   display: inline-flex;
+  justify-content: center;
 }
 
 .item-row {
   padding: 5px 10px;
+  gap: 10px;
+  border-top: 1px solid black;
 }
 
 .item-wrapper {
   white-space: nowrap; /* Prevents text from wrapping */
   overflow: hidden; /* Hides any overflowing content */
   text-overflow: ellipsis; /* Optionally adds '...' for overflow */
-  width: 200px; /* Set a width for the ellipsis effect */
+  width: 250px; /* Set a width for the ellipsis effect */
+}
+
+.price-wrapper {
+  width: 40px;
 }
 
 #totals-wrapper {

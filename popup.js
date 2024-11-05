@@ -3,14 +3,13 @@ document.addEventListener("DOMContentLoaded", async () => {
   const mainWrapper = document.querySelector("#grocery-items-wrapper");
 
   try {
+    let groceryData;
+
     // CHECK IF DATA IS ALREADY STORED
     const storedData = await chrome.storage.local.get("groceryData");
     console.log(storedData);
-
-    let groceryData;
-
-    // IF STORED; RENDER STORED DATA, ELSE FETCH DATA
-    if (storedData && storedData.groceryData) {
+    // IF DATA IS STORED; RENDER STORED DATA, ELSE FETCH DATA
+    if (groceryData) {
       console.log("Using stored data", storedData.groceryData);
       groceryData = storedData.groceryData;
     } else {
@@ -31,20 +30,13 @@ document.addEventListener("DOMContentLoaded", async () => {
         action: "getData",
       });
       console.log("data recieved from background ", response.data);
-
-      // WHEN DATA RECEIVED
-      if (response && response.data && Array.isArray(response.data)) {
-        groceryData = response.data;
-
-        // Store the fetched data for later use
-        await chrome.storage.local.set({ groceryData: response.data });
-      } else {
-        console.error(
-          "Invalid or missing data from background script:",
-          response
-        );
-        mainWrapper.innerHTML = "No data available";
-      }
+      // Store the fetched data for later use
+      await chrome.storage.local.set({ groceryData: response.data });
+      groceryData = response.data;
+    }
+    // Only render if we have valid data
+    if (groceryData) {
+      renderData(groceryData);
     }
 
     // Add reset button creation and functionality
@@ -61,7 +53,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         const response = await chrome.runtime.sendMessage({
           action: "getData",
         });
-        console.log("Reset response:", response);
+        console.log("Reset response:", response.data);
 
         // If we got fresh data back, render it
         if (response && response.data && Array.isArray(response.data)) {
@@ -78,10 +70,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     const totalsWrapper = document.querySelector("#totals-wrapper");
     totalsWrapper.prepend(resetButton);
-    // Only render if we have valid data
-    if (groceryData) {
-      renderData(groceryData);
-    }
   } catch (error) {
     console.log("Error ", error);
   }
@@ -171,18 +159,5 @@ document.addEventListener("DOMContentLoaded", async () => {
     await chrome.storage.local.set({ groceryData: data });
     console.log("Updated data:", data);
     calculateTotals(data);
-
-    const radios = [...document.querySelectorAll("input")];
-    // console.log(radios);
-
-    const abList = radios.filter((radio) => {
-      return radio.checked === true && radio.value === "alicia";
-    });
-    const ibList = radios.filter((radio) => {
-      return radio.checked === true && radio.value === "ian";
-    });
-    const sharedList = radios.filter((radio) => {
-      return radio.checked === true && radio.value === "shared";
-    });
   }
 });
